@@ -1,3 +1,4 @@
+# -*- coding: cp1252 -*-
 import re
 
 import epguide
@@ -36,9 +37,11 @@ def decodeFN(fn):
 
 def formatToOutput(sn,season,ep,fformat):
     try:
-        epn = re.sub('[\/:*?"<>|]','',epguide.EpList[sn][season][ep])
+        epn = unicode(epguide.EpList[sn][season][ep], 'utf-8')
+        epn = re.sub('[\/:*?"<>|]', '', epn)
+        epn = re.sub('\u2019', '\'', epn)
     except KeyError:
         return ''
     s = str(season)
     e = str(ep).rjust(2,'0')
-    return '%s %sx%s - %s.%s' % (sn,s,e,epn,fformat)
+    return u'%s %sx%s - %s.%s' % (sn,s,e,epn,fformat)
